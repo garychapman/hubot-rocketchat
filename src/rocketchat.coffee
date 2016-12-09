@@ -149,16 +149,22 @@ class RocketChatBotAdapter extends Adapter
 						edited = new Date(newmsg.editedAt.$date)
 						curts = if edited > curts then edited else curts
 					@robot.logger.info "Message receive callback id " + newmsg._id + " ts " + curts
-					@robot.logger.info "[Incoming] #{newmsg.u.username}: #{if newmsg.file? then newmsg.attachments[0].title else newmsg.msg}"
+					@robot.logger.info "[Incoming] #{newmsg.u.username}: #{if newmsg.file? then newmsg.attachments?[0]?.title else newmsg.msg}"
 
 					if curts > @lastts
 						@lastts = curts
+						
+						user.room = newmsg.rid
+
+						if newmsg.t is 'au' and newmsg.added
+							user = @robot.brain.userForId newmsg.added._id, name: newmsg.msg, room: newmsg.rid
+							return @robot.receive new EnterMessage user, null, newmsg._id
+
+						user = @robot.brain.userForId newmsg.u._id, name: newmsg.u.username
+
 						if newmsg.t is 'uj'
-							user = @robot.brain.userForId newmsg.u._id, name: newmsg.u.username, room: newmsg.rid
 							@robot.receive new EnterMessage user, null, newmsg._id
 						else
-							user = @robot.brain.userForId newmsg.u._id, name: newmsg.u.username, room: newmsg.rid
-
 							# check for the presence of attachments in the message
 							if newmsg.file? and newmsg.attachments.length
 								attachment = newmsg.attachments[0]
@@ -176,7 +182,7 @@ class RocketChatBotAdapter extends Adapter
 								message = new AttachmentMessage user, attachment, attachment.title, newmsg._id
 							else
 								message = new TextMessage user, newmsg.msg, newmsg._id
-								
+
 							startOfText = if message.text.indexOf('@') == 0 then 1 else 0
 							robotIsNamed = message.text.indexOf(@robot.name) == startOfText || message.text.indexOf(@robot.alias) == startOfText
 							if isDM and not robotIsNamed
@@ -216,6 +222,9 @@ class RocketChatBotAdapter extends Adapter
 		unless isDM
 			strings = strings.map (s) -> "@#{envelope.user.name} #{s}"
 		@send envelope, strings...
+
+	getRoomId: (room) =>
+		@chatdriver.getRoomId(room)
 
 	callMethod: (method, args...) =>
 		@chatdriver.callMethod(method, args)

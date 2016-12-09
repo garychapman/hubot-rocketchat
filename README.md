@@ -12,9 +12,9 @@ Feel free to join us in the [#hubot](https://demo.rocket.chat/channel/hubot) cha
 
 ## Important
 
-v1.0.x of the adapter introduces breaking changes.  It is only compatible with v0.37.0 and higher of Rocket.Chat Server.
+The latest version of the adapter is only compatible with 0.37.1 and higher of Rocket.Chat Server.
 
-If you are using an older version of Rocket.Chat please use v0.1.4 of the adapter.
+If you are using Rocket.Chat  0.35.0 or earilier, please use v0.1.4 of the adapter.  (releases between 0.35.0 and 0.37.1 are not recommended for hubot operations) 
 
 #### NOTE
 If you want to integrate Rocket.Chat with GitHub or GitLab.  Make sure you visit the [Rocket.Chat.Ops](https://github.com/RocketChat/Rocket.Chat.Ops) project before starting. We already have many scripts that add webhook events and access GitHub/GitLab APIs. You can easily extend these scripts for your custom application.
@@ -105,7 +105,7 @@ Then you need to start the setup of the bot
 ```
 mkdir myhubot
 cd myhubot
-yo hubot --adapter="rocketchat@0.1"
+yo hubot --adapter="rocketchat@1"
 ```
 
 It'll ask you a few questions.
@@ -135,7 +135,7 @@ Then start with: `bin/hubot -a rocketchat`
 #### Existing install
 If you already have hubot setup you can add the adapter.
 
-By doing: `npm install hubot-rocketchat@0.1`
+By doing: `npm install hubot-rocketchat@1`
 
 You will need to tell the adapter where your install is and what login information to use.
 
@@ -295,6 +295,6 @@ Once received, the bot:
 
 Q:   The architecture of hubot-rocketchat looks interesting, can you tell me more about it?
 
-A:  Sure, it is based on hubot-meteorchat.  hubot-meteorchat is the hubot integration project for Meteor based chats and real-time messaging systems.  Its driver based architecture simplifies creation and cusotmization of adapter for new systems. For example, the hubot-rocketchat integration is just hubot-meteorchat + rocketchat driver.
+A:  Sure, it is based on hubot-meteorchat.  hubot-meteorchat is the hubot integration project for Meteor based chats and real-time messaging systems.  Its driver based architecture simplifies creation and cusotmization of adapter for new systems. For example, the hubot-rocketchat integration is just hubot-meteorchat + Rocket.Chat driver.
 
 Learn more about hubot-meteorchat and other available drivers [at this link](https://github.com/Sing-Li/hubot-meteorchat).
