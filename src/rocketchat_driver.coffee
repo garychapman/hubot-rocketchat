@@ -79,7 +79,7 @@ class RocketChatDriver
 
 	sendMessageByRoomId: (content, roomid) =>
 		message = @prepareMessage content, roomid
-		Q @asteroid.call('sendMessage', message)
+		@asteroid.call('sendMessage', message)
 		.then (result)->
 			@logger.debug('[sendMessage] Success:', result)
 		.catch (error) ->
