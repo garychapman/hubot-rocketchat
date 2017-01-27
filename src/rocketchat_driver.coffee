@@ -78,12 +78,13 @@ class RocketChatDriver
 			@sendMessageByRoomId message, roomid
 
 	sendMessageByRoomId: (content, roomid) =>
+		self = this
 		message = @prepareMessage content, roomid
-		@asteroid.call('sendMessage', message)
-		.then (result)->
-			@logger.debug('[sendMessage] Success:', result)
+		Q @asteroid.call('sendMessage', message)
+		.then (result) ->
+			self.logger.debug('[sendMessage] Success:', result)
 		.catch (error) ->
-			@logger.error('[sendMessage] Error:', error)
+			self.logger.error('[sendMessage] Error:', error)
 
 	customMessage: (message) =>
 		@logger.info "Sending Custom Message To Room: #{message.channel}"
